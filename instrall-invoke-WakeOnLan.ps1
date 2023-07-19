@@ -14,7 +14,14 @@ function Invoke-WakeOnLan
   begin
   {
     # instantiate a UDP client:
+    # fill ip in case u want to send to send over a specific adepter 
+    $InterfaceName = 'WiFi 2'
     $UDPclient = [System.Net.Sockets.UdpClient]::new()
+    if ($InterfaceName -ne '') {
+      $InterfaceIp = (Get-NetIPAddress -InterfaceAlias $InterfaceName -AddressFamily IPv4).IPAddress
+      $UDPclient.Client.Bind((New-Object System.Net.IPEndPoint([IPAddress]$InterfaceIp, 0)))
+    }
+    
   }
   process
   {
@@ -47,11 +54,11 @@ function Invoke-WakeOnLan
         #endregion
         
         # connect to port 400 on broadcast address:
-        $UDPclient.Connect(([System.Net.IPAddress]::Broadcast),4000)
+        $UDPclient.Connect(([System.Net.IPAddress]::Broadcast),9)
         
         # send the magic packet to the broadcast address:
         $null = $UDPclient.Send($packet, $packet.Length)
-        Write-Verbose "sent magic packet to $currentMacAddress..."
+        Write-Verbose "sent magic packet to $currentMacAddress...kaas"
       }
       catch 
       {

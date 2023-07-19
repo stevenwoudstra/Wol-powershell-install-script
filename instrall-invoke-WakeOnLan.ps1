@@ -58,7 +58,7 @@ function Invoke-WakeOnLan
         
         # send the magic packet to the broadcast address:
         $null = $UDPclient.Send($packet, $packet.Length)
-        Write-Verbose "sent magic packet to $currentMacAddress...kaas"
+        Write-Verbose "sent magic packet to $currentMacAddress..."
       }
       catch 
       {
